@@ -1,4 +1,5 @@
 <?php
+/** 后台应用配置，管理员仅使用会话登录。 */
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -8,6 +9,8 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'name' => '2026世界杯球队信息系统后台',
+    'language' => 'zh-CN',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
@@ -18,7 +21,7 @@ return [
         ],
         'user' => [
             'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
         'session' => [

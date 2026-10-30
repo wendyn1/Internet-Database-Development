@@ -1,0 +1,124 @@
+erDiagram
+    team ||--o{ team_player : includes
+    player ||--o{ team_player : joins
+    team ||--o{ team_coach : appoints
+    coach ||--o{ team_coach : coaches
+    venue ||--o{ football_match : hosts
+    team o|--o{ football_match : home_team
+    team o|--o{ football_match : away_team
+    football_match ||--o{ player_match_stat : records
+    team_player ||--o{ player_match_stat : performs
+    team ||--o{ team_honor : earns
+    honor ||--o{ team_honor : defines
+    team o|--o{ comment : target_team
+    player o|--o{ comment : target_player
+    football_match o|--o{ comment : target_match
+    user o|--o{ comment : reviews
+    user {
+        int id PK
+        varchar_255 username
+        varchar_32 auth_key
+        varchar_255 password_hash
+        varchar_255 password_reset_token
+        varchar_255 email
+        smallint status
+        int created_at
+        int updated_at
+        varchar_255 verification_token
+    }
+    team {
+        int id PK
+        varchar_80 name_zh
+        varchar_80 name_en
+        varchar_3 fifa_code
+        varchar_80 country
+        varchar_30 continent
+        text introduction
+        varchar_500 logo_path
+    }
+    player {
+        int id PK
+        varchar_80 name_zh
+        varchar_100 name_en
+        varchar_80 nationality
+        date birth_date
+        varchar_500 photo_path
+    }
+    team_player {
+        int id PK
+        int team_id
+        int player_id
+        int tournament_year
+        int shirt_number
+        varchar_2 position_code
+    }
+    coach {
+        int id PK
+        varchar_80 name_zh
+        varchar_100 name_en
+        varchar_80 nationality
+        text introduction
+        varchar_500 photo_path
+    }
+    team_coach {
+        int id PK
+        int team_id
+        int coach_id
+        int tournament_year
+        varchar_30 role
+    }
+    venue {
+        int id PK
+        varchar_80 name_zh
+        varchar_100 name_en
+        varchar_80 city
+        varchar_80 country
+    }
+    football_match {
+        int id PK
+        int fifa_match_number
+        int tournament_year
+        varchar_30 stage
+        int venue_id
+        int home_team_id
+        int away_team_id
+        varchar_80 home_team_name
+        varchar_80 away_team_name
+        date match_date_beijing
+        varchar_20 status
+        int home_score
+        int away_score
+        smallint after_extra_time
+    }
+    player_match_stat {
+        int id PK
+        int match_id
+        int team_player_id
+        smallint appeared
+        int goals
+        int assists
+    }
+    honor {
+        int id PK
+        varchar_80 name
+        varchar_80 competition
+    }
+    team_honor {
+        int id PK
+        int team_id
+        int honor_id
+        int year
+        varchar_255 description
+    }
+    comment {
+        int id PK
+        int team_id
+        int player_id
+        int match_id
+        varchar_30 nickname
+        text content
+        varchar_20 status
+        datetime created_at
+        int reviewed_by
+        datetime reviewed_at
+    }

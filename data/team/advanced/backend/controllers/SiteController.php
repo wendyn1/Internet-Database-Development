@@ -1,100 +1,66 @@
 <?php
+/** 后台登录、退出和修改本人密码控制器。 */
 namespace backend\controllers;
 
 use Yii;
-use yii\web\Controller;
+use backend\models\AdminLoginForm;
+use backend\models\ChangePasswordForm;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
 
-/**
- * Site controller
- */
-class SiteController extends Controller
+class SiteController extends AdminController
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+        $behaviors = parent::behaviors();
+        $behaviors['adminAccess']['except'] = ['login', 'error'];
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::class,
+            'actions' => ['logout' => ['post'], 'login' => ['get', 'post'],
+                'change-password' => ['get', 'post']],
         ];
+        return $behaviors;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function actions()
     {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
+        return ['error' => ['class' => 'yii\web\ErrorAction']];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return string
-     */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        if (\backend\components\AdminAccess::isAdmin(Yii::$app->user->identity)) {
             return $this->goHome();
         }
-
-        $model = new LoginForm();
+        $model = new AdminLoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            return $this->goHome();
         }
+        $model->password = '';
+        return $this->render('login', ['model' => $model]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
     public function actionLogout()
     {
         Yii::$app->user->logout();
+        return $this->redirect(['site/login']);
+    }
 
-        return $this->goHome();
+    public function actionChangePassword()
+    {
+        $model = new ChangePasswordForm();
+        if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
+            Yii::$app->user->logout();
+            Yii::$app->session->setFlash('success', '密码修改成功，请使用新密码重新登录。');
+            return $this->redirect(['site/login']);
+        }
+        $model->oldPassword = '';
+        $model->newPassword = '';
+        $model->confirmPassword = '';
+        return $this->render('change-password', ['model' => $model]);
     }
 }

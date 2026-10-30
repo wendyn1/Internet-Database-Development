@@ -1,4 +1,5 @@
 <?php
+/** 前台公开页面控制器，模板账号入口已关闭。 */
 namespace frontend\controllers;
 
 use frontend\models\ResendVerificationEmailForm;
@@ -20,6 +21,17 @@ use frontend\models\ContactForm;
  */
 class SiteController extends Controller
 {
+    public function beforeAction($action)
+    {
+        if (in_array($action->id, [
+            'login', 'signup', 'logout', 'request-password-reset',
+            'reset-password', 'verify-email', 'resend-verification-email',
+        ], true)) {
+            throw new \yii\web\NotFoundHttpException('页面不存在。');
+        }
+        return parent::beforeAction($action);
+    }
+
     /**
      * {@inheritdoc}
      */

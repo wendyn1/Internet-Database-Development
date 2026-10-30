@@ -1,4 +1,5 @@
 <?php
+/** 后台公共布局及管理员导航。 */
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -36,15 +37,16 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => '后台首页', 'url' => ['/site/index']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => '管理员登录', 'url' => ['/site/login']];
     } else {
+        $menuItems[] = ['label' => '修改密码', 'url' => ['/site/change-password']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                '退出 (' . Html::encode(Yii::$app->user->identity->username) . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()
