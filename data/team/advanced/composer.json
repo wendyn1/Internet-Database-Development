@@ -34,9 +34,16 @@
         "process-timeout": 1800,
         "fxp-asset": {
             "enabled": false
-        }
+        },
+        "cafile": "D:\\soft\\php-7.4.33\\cacert.pem",
+        "allow-plugins": true
     },
     "repositories": [
+        {
+            "name": "packagist",
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        },
         {
             "type": "composer",
             "url": "https://asset-packagist.org"

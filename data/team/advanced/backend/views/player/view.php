@@ -1,0 +1,38 @@
+<?php
+/**
+ * 项目：2026世界杯球队信息系统
+ * 文件职责：后台球员详情视图（B6）
+ * 作者：王乐妍（2413423）
+ * 创建日期：2026-11-22
+ * 主要修改者：王乐妍（2413423）
+ */
+use yii\helpers\Html;
+use yii\widgets\DetailView;
+
+/* @var $this yii\web\View */
+/* @var $model common\models\Player */
+
+$this->title = $model->name_zh;
+$this->params['breadcrumbs'][] = ['label' => '球员管理', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="player-admin-view">
+    <p>
+        <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => ['confirm' => '确认删除该球员？', 'method' => 'post'],
+        ]) ?>
+    </p>
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            'name_zh',
+            'name_en',
+            'nationality',
+            ['attribute' => 'birth_date', 'format' => 'date'],
+            'photo_path',
+        ],
+    ]) ?>
+</div>
