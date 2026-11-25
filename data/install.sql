@@ -1,9 +1,5 @@
--- 2026世界杯球队信息系统 业务表与样本数据安装脚本
--- 适用前提：同一数据库已通过 Yii 初始迁移创建 user 表（php yii migrate）。
--- 本脚本不创建管理员账号，请随后执行 php yii admin/init。
--- 本脚本不是幂等安装器，不要在已有业务表的数据库上重复执行。
--- 生成日期：2026-11-25
--- Prepared only; NOT executed. Existing user/admin must be preserved.
+-- 2026世界杯球队信息系统 业务表结构与样本数据
+-- 使用前请先执行 php yii migrate 创建 user 表；管理员账号需另行执行 php yii admin/init。
 SET NAMES utf8mb4;
 SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_BACKSLASH_ESCAPES,NO_ENGINE_SUBSTITUTION';
 CREATE TABLE `team` (
@@ -188,7 +184,7 @@ CREATE INDEX `ix_comment_4` ON `comment` (`status`, `created_at`, `id`);
 CREATE INDEX `ix_comment_5` ON `comment` (`reviewed_by`);
 
 
--- Prepared only; NOT executed. Existing user/admin must be preserved.
+-- 样本数据
 SET NAMES utf8mb4;
 SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_BACKSLASH_ESCAPES,NO_ENGINE_SUBSTITUTION';
 
