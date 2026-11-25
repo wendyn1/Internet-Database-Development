@@ -40,6 +40,8 @@ AppAsset::register($this);
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => '比赛列表', 'url' => ['/football-match/index']],
+        ['label' => '球队对比', 'url' => ['/team/compare']],
     ];
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],

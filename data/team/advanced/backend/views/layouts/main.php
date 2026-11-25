@@ -42,6 +42,11 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => '管理员登录', 'url' => ['/site/login']];
     } else {
+        $menuItems[] = ['label' => '比赛管理', 'items' => [
+            ['label' => '场馆', 'url' => ['/venue/index']],
+            ['label' => '比赛', 'url' => ['/football-match/index']],
+            ['label' => '球员统计', 'url' => ['/player-match-stat/index']],
+        ]];
         $menuItems[] = ['label' => '修改密码', 'url' => ['/site/change-password']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')

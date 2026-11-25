@@ -5,6 +5,13 @@ return [
     'commentTargets' => [
         'team' => ['detailRoute' => null, 'publicExists' => null],
         'player' => ['detailRoute' => null, 'publicExists' => null],
-        'match' => ['detailRoute' => null, 'publicExists' => null],
+        'match' => [
+            'detailRoute' => '/football-match/view',
+            'publicExists' => static function ($id) {
+                return \common\models\FootballMatch::find()
+                    ->where(['id' => (int) $id])
+                    ->exists();
+            },
+        ],
     ],
 ];
