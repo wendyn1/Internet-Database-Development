@@ -309,3 +309,45 @@ INSERT INTO `team_honor` (`id`, `team_id`, `honor_id`, `year`, `description`) VA
 INSERT INTO `team_honor` (`id`, `team_id`, `honor_id`, `year`, `description`) VALUES (13, 6, 1, 1966, '1966年世界杯冠军');
 INSERT INTO `team_honor` (`id`, `team_id`, `honor_id`, `year`, `description`) VALUES (14, 5, 2, 2016, '2016年欧洲杯冠军');
 COMMIT;
+
+-- 媒体素材路径补齐：与 frontend/web/uploads/{team,player,coach}/ 内 36 张图片一一对应，
+-- 语句幂等可重复执行；素材来源见 文档/媒体素材/媒体素材来源记录.md（2026-11-26 并入）。
+
+UPDATE `team` SET `logo_path` = 'uploads/team/1.jpg' WHERE `id` = 1;
+UPDATE `team` SET `logo_path` = 'uploads/team/2.jpg' WHERE `id` = 2;
+UPDATE `team` SET `logo_path` = 'uploads/team/3.jpg' WHERE `id` = 3;
+UPDATE `team` SET `logo_path` = 'uploads/team/4.jpg' WHERE `id` = 4;
+UPDATE `team` SET `logo_path` = 'uploads/team/5.jpg' WHERE `id` = 5;
+UPDATE `team` SET `logo_path` = 'uploads/team/6.jpg' WHERE `id` = 6;
+
+UPDATE `player` SET `photo_path` = 'uploads/player/1.jpg'  WHERE `id` = 1;
+UPDATE `player` SET `photo_path` = 'uploads/player/2.jpg'  WHERE `id` = 2;
+UPDATE `player` SET `photo_path` = 'uploads/player/3.jpg'  WHERE `id` = 3;
+UPDATE `player` SET `photo_path` = 'uploads/player/4.jpg'  WHERE `id` = 4;
+UPDATE `player` SET `photo_path` = 'uploads/player/5.jpg'  WHERE `id` = 5;
+UPDATE `player` SET `photo_path` = 'uploads/player/6.jpg'  WHERE `id` = 6;
+UPDATE `player` SET `photo_path` = 'uploads/player/7.jpg'  WHERE `id` = 7;
+UPDATE `player` SET `photo_path` = 'uploads/player/8.jpg'  WHERE `id` = 8;
+UPDATE `player` SET `photo_path` = 'uploads/player/9.jpg'  WHERE `id` = 9;
+UPDATE `player` SET `photo_path` = 'uploads/player/10.jpg' WHERE `id` = 10;
+UPDATE `player` SET `photo_path` = 'uploads/player/11.jpg' WHERE `id` = 11;
+UPDATE `player` SET `photo_path` = 'uploads/player/12.jpg' WHERE `id` = 12;
+UPDATE `player` SET `photo_path` = 'uploads/player/13.jpg' WHERE `id` = 13;
+UPDATE `player` SET `photo_path` = 'uploads/player/14.jpg' WHERE `id` = 14;
+UPDATE `player` SET `photo_path` = 'uploads/player/15.jpg' WHERE `id` = 15;
+UPDATE `player` SET `photo_path` = 'uploads/player/16.jpg' WHERE `id` = 16;
+UPDATE `player` SET `photo_path` = 'uploads/player/17.jpg' WHERE `id` = 17;
+UPDATE `player` SET `photo_path` = 'uploads/player/18.jpg' WHERE `id` = 18;
+UPDATE `player` SET `photo_path` = 'uploads/player/19.jpg' WHERE `id` = 19;
+UPDATE `player` SET `photo_path` = 'uploads/player/20.jpg' WHERE `id` = 20;
+UPDATE `player` SET `photo_path` = 'uploads/player/21.jpg' WHERE `id` = 21;
+UPDATE `player` SET `photo_path` = 'uploads/player/22.jpg' WHERE `id` = 22;
+UPDATE `player` SET `photo_path` = 'uploads/player/23.jpg' WHERE `id` = 23;
+UPDATE `player` SET `photo_path` = 'uploads/player/24.jpg' WHERE `id` = 24;
+
+UPDATE `coach` SET `photo_path` = 'uploads/coach/1.jpg' WHERE `id` = 1;
+UPDATE `coach` SET `photo_path` = 'uploads/coach/2.jpg' WHERE `id` = 2;
+UPDATE `coach` SET `photo_path` = 'uploads/coach/3.jpg' WHERE `id` = 3;
+UPDATE `coach` SET `photo_path` = 'uploads/coach/4.jpg' WHERE `id` = 4;
+UPDATE `coach` SET `photo_path` = 'uploads/coach/5.jpg' WHERE `id` = 5;
+UPDATE `coach` SET `photo_path` = 'uploads/coach/6.jpg' WHERE `id` = 6;
