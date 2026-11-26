@@ -66,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'emptyText' => '没有符合条件的球员。',
         'columns' => [
             'id',
             [

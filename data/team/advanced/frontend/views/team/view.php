@@ -1,12 +1,12 @@
 <?php
 /**
  * 项目：2026世界杯球队信息系统
- * 文件职责：球队详情视图（B4）：资料、本届阵容、教练、荣誉；
- *           B7留言组件与B8统计接入待A/C交付后在页尾挂载
+ * 文件职责：球队详情视图（B4）：资料、本届阵容、教练、荣誉、留言组件；
  * 作者：王乐妍（2413423）
  * 创建日期：2026-11-22
  * 主要修改者：王乐妍（2413423）
  */
+use frontend\widgets\CommentWidget;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -101,6 +101,10 @@ $this->params['breadcrumbs'][] = $this->title;
         </ul>
     <?php endif; ?>
 
-    <?php /* B7：留言组件挂载点，待A统一处理器与组件改造交付后接入；
-             B8：战绩统计入口挂载点，待C交付TeamStatsService与compare/stats动作后由B合并 */ ?>
+    <?= CommentWidget::widget([
+        'targetType' => 'team',
+        'targetId' => $model->id,
+    ]) ?>
+
+    <?php /* B8：战绩统计入口挂载点，待C交付TeamStatsService与compare/stats动作后由B合并 */ ?>
 </div>
