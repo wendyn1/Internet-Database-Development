@@ -1,7 +1,7 @@
 <?php
 /**
  * 项目：2026世界杯球队信息系统
- * 文件职责：前台球队列表与详情控制器（B3）；详情是留言与统计的挂载目标（B7/B8待集成）
+ * 文件职责：前台球队列表与详情控制器（B3）；详情挂载留言与战绩统计（B7/B8），含C的对比与统计JSON动作
  * 作者：王乐妍（2413423）
  * 创建日期：2026-11-22
  * 主要修改者：王乐妍（2413423）
@@ -28,9 +28,20 @@ class TeamController extends Controller
         ]);
     }
 
+    /**
+     * 详情页同时挂载战绩统计（B8）：只调用C的统一服务，不复制统计SQL；
+     * 服务异常时页面降级为提示，不影响资料与留言展示。
+     */
     public function actionView($id = null)
     {
-        return $this->render('view', ['model' => $this->findModel($id)]);
+        $model = $this->findModel($id);
+        $stats = null;
+        try {
+            $stats = (new TeamStatsService())->getSummary($model->id);
+        } catch (\Throwable $exception) {
+            Yii::error($exception->getMessage(), __METHOD__);
+        }
+        return $this->render('view', ['model' => $model, 'stats' => $stats]);
     }
 
     /**
