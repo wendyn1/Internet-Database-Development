@@ -1,9 +1,17 @@
 <?php
-/** 前台公开页面控制器，模板账号入口已关闭。 */
+/**
+ * 项目：2026世界杯球队信息系统
+ * 文件职责：前台公开页面控制器，模板账号入口已关闭
+ * 作者：牛雨萱（学号 2411061）
+ * 创建日期：2026-11-22
+ * 主要修改者：牛雨萱（学号 2411061）
+ */
 namespace frontend\controllers;
 
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use common\models\FootballMatch;
+use common\models\Team;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
@@ -14,7 +22,6 @@ use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 
 /**
  * Site controller
@@ -72,10 +79,6 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
         ];
     }
 
@@ -86,7 +89,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $teams = Team::find()
+            ->orderBy(['id' => SORT_ASC])
+            ->limit(6)
+            ->all();
+        $recentMatches = FootballMatch::find()
+            ->orderBy(['match_date_beijing' => SORT_DESC, 'id' => SORT_DESC])
+            ->limit(5)
+            ->all();
+
+        return $this->render('index', [
+            'teams' => $teams,
+            'recentMatches' => $recentMatches,
+        ]);
     }
 
     /**
@@ -122,29 +137,6 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return mixed
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
     }
 
     /**

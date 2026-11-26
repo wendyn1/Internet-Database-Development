@@ -3,8 +3,22 @@
 return [
     'adminEmail' => 'admin@example.com',
     'commentTargets' => [
-        'team' => ['detailRoute' => null, 'publicExists' => null],
-        'player' => ['detailRoute' => null, 'publicExists' => null],
+        'team' => [
+            'detailRoute' => '/team/view',
+            'publicExists' => static function ($id) {
+                return \common\models\Team::find()
+                    ->where(['id' => (int) $id])
+                    ->exists();
+            },
+        ],
+        'player' => [
+            'detailRoute' => '/player/view',
+            'publicExists' => static function ($id) {
+                return \common\models\Player::find()
+                    ->where(['id' => (int) $id])
+                    ->exists();
+            },
+        ],
         'match' => [
             'detailRoute' => '/football-match/view',
             'publicExists' => static function ($id) {

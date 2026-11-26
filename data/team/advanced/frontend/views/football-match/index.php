@@ -67,6 +67,7 @@ foreach ($teams as $team) {
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'emptyText' => '没有符合条件的比赛。',
         'columns' => [
             ['attribute' => 'match_date_beijing', 'label' => '北京日期'],
             ['attribute' => 'stage', 'label' => '阶段',

@@ -18,7 +18,7 @@ param(
     [string]$MysqlPath = 'D:\xampp\mysql\bin\mysql.exe',
     [string]$DbHost = '127.0.0.1',
     [int]$DbPort = 3306,
-    [string]$DbName = 'worldcup',
+    [string]$DbName = 'yii2advanced',
     [string]$DbUser = 'root',
     [string]$DbPassword = ''
 )

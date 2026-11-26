@@ -1,13 +1,13 @@
 <?php
 /**
  * 项目：2026世界杯球队信息系统
- * 文件职责：球员详情视图（B4）：出生日期未知不显示年龄，缺图占位；
- *           B7留言组件挂载点待A交付后接入
+ * 文件职责：球员详情视图（B4）：出生日期未知不显示年龄，缺图占位，留言组件已挂载
  * 作者：王乐妍（2413423）
  * 创建日期：2026-11-22
  * 主要修改者：王乐妍（2413423）
  */
 use common\models\TeamPlayer;
+use frontend\widgets\CommentWidget;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -69,5 +69,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </table>
     <?php endif; ?>
 
-    <?php /* B7：留言组件挂载点，待A统一处理器与组件改造交付后接入 */ ?>
+    <?= CommentWidget::widget([
+        'targetType' => 'player',
+        'targetId' => $model->id,
+    ]) ?>
 </div>

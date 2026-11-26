@@ -1,5 +1,11 @@
 <?php
-/** 前台公共布局，不提供访客注册或登录入口。 */
+/**
+ * 项目：2026世界杯球队信息系统
+ * 文件职责：前台公共布局及导航，不提供访客注册或登录入口
+ * 作者：牛雨萱（学号 2411061）
+ * 创建日期：2026-11-22
+ * 主要修改者：牛雨萱（学号 2411061）
+ */
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -37,11 +43,12 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-        ['label' => '比赛列表', 'url' => ['/football-match/index']],
+        ['label' => '首页', 'url' => ['/site/index']],
+        ['label' => '球队', 'url' => ['/team/index']],
+        ['label' => '球员', 'url' => ['/player/index']],
+        ['label' => '比赛', 'url' => ['/football-match/index']],
         ['label' => '球队对比', 'url' => ['/team/compare']],
+        ['label' => '关于本站', 'url' => ['/site/about']],
     ];
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],

@@ -1,7 +1,14 @@
 <?php
-/** 可复用留言组件：详情页传 targetType 和 targetId，未完成接口配置时不查询数据库。 */
+/**
+ * 项目：2026世界杯球队信息系统
+ * 文件职责：可复用留言组件，详情页传目标类型和编号，未配置接口时不查询数据库
+ * 作者：牛雨萱（学号 2411061）
+ * 创建日期：2026-11-22
+ * 主要修改者：牛雨萱（学号 2411061）
+ */
 namespace frontend\widgets;
 
+use Yii;
 use common\models\Comment;
 use frontend\components\CommentTarget;
 use frontend\models\CommentForm;
@@ -30,8 +37,24 @@ class CommentWidget extends Widget
             'pagination' => ['pageSize' => 10, 'pageParam' => 'comment-page'],
             'sort' => false,
         ]);
+
+        // 提交失败后回到详情页时，恢复错误提示和已填写内容
+        $model = $this->model ?: new CommentForm();
+        $errors = Yii::$app->session->getFlash('commentErrors', [], true);
+        if (is_array($errors) && $errors !== []) {
+            $model->addErrors($errors);
+        }
+        $old = Yii::$app->session->getFlash('commentOld', [], true);
+        if (is_array($old)) {
+            foreach (['nickname', 'content'] as $name) {
+                if (isset($old[$name]) && is_scalar($old[$name])) {
+                    $model->$name = (string) $old[$name];
+                }
+            }
+        }
+
         return $this->render('@frontend/views/comment/_panel', [
-            'model' => $this->model ?: new CommentForm(), 'provider' => $provider,
+            'model' => $model, 'provider' => $provider,
             'targetType' => $this->targetType, 'targetId' => $target['id'],
         ]);
     }

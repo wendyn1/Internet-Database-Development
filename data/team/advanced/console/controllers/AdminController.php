@@ -1,5 +1,11 @@
 <?php
-/** 首次部署管理员初始化命令；仅交互创建，拒绝覆盖已有账号。 */
+/**
+ * 项目：2026世界杯球队信息系统
+ * 文件职责：管理员本机维护命令，交互初始化及忘记密码后的密码重置
+ * 作者：牛雨萱（学号 2411061）
+ * 创建日期：2026-11-22
+ * 主要修改者：牛雨萱（学号 2411061）
+ */
 namespace console\controllers;
 
 use Yii;
@@ -10,6 +16,66 @@ use yii\validators\EmailValidator;
 
 class AdminController extends Controller
 {
+    /** 本机交互重置指定管理员密码：php yii admin/reset-password。 */
+    public function actionResetPassword()
+    {
+        if (!$this->interactive || PHP_OS_FAMILY !== 'Windows') {
+            $this->stderr("请在 Windows 本机交互终端运行此命令。\n");
+            return ExitCode::USAGE;
+        }
+        $params = array_merge(
+            require Yii::getAlias('@backend/config/params.php'),
+            require Yii::getAlias('@backend/config/params-local.php')
+        );
+        $username = $params['adminUsername'] ?? null;
+        if (!is_string($username) || trim($username) === '') {
+            $this->stderr("后台未配置有效的 adminUsername。\n");
+            return ExitCode::CONFIG;
+        }
+        try {
+            $user = User::findByUsername($username);
+            if ($user === null || $user->username !== $username) {
+                $this->stderr("未找到指定的启用管理员，未修改账号。\n");
+                return ExitCode::DATAERR;
+            }
+            $this->stdout("将重置管理员密码：{$username}\n");
+            $password = $this->readHiddenPassword('请输入新密码（8—64个字符）：');
+            $confirm = $this->readHiddenPassword('请再次输入新密码：');
+            $length = mb_strlen($password, 'UTF-8');
+            if ($length < 8 || $length > 64 || $password !== $confirm) {
+                $this->stderr("密码须为8—64个字符，且两次输入一致；未修改密码。\n");
+                return ExitCode::DATAERR;
+            }
+            if (!$this->confirm('确认重置该管理员密码？', false)) {
+                $this->stdout("已取消，未修改密码。\n");
+                return ExitCode::OK;
+            }
+            $oldHash = $user->password_hash;
+            $user->setPassword($password);
+            $user->generateAuthKey();
+            unset($password, $confirm);
+            // 条件更新避免覆盖交互期间由其他操作修改的密码或状态。
+            $updated = User::updateAll([
+                'password_hash' => $user->password_hash,
+                'auth_key' => $user->auth_key,
+                'password_reset_token' => null,
+                'updated_at' => time(),
+            ], [
+                'id' => $user->id, 'username' => $username,
+                'status' => User::STATUS_ACTIVE, 'password_hash' => $oldHash,
+            ]);
+            if ($updated !== 1) {
+                $this->stderr("账号在操作期间已变化，未重置密码，请重新检查。\n");
+                return ExitCode::DATAERR;
+            }
+            $this->stdout("管理员密码已重置，请用新密码重新登录。\n");
+            return ExitCode::OK;
+        } catch (\Throwable $exception) {
+            $this->stderr("密码重置未完成，请检查数据库服务和交互终端；不要重建数据库。\n");
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+    }
+
     /**
      * 交互创建后台配置指定的管理员：php yii admin/init。
      * 密码不接受命令行参数，不写入输出或文件。
