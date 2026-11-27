@@ -12,6 +12,7 @@ use Yii;
 use common\models\Team;
 use common\services\TeamStatsService;
 use frontend\models\TeamSearch;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -97,6 +98,18 @@ class TeamController extends Controller
             }
         }
 
+        $teamInfo = [];
+        foreach (Team::find()->orderBy(['id' => SORT_ASC])->all() as $team) {
+            $teamInfo[$team->id] = [
+                'name_zh' => (string) $team->name_zh,
+                'name_en' => (string) $team->name_en,
+                'fifa_code' => (string) $team->fifa_code,
+                'country' => (string) $team->country,
+                'continent' => (string) $team->continent,
+                'url' => Url::to(['/team/view', 'id' => $team->id]),
+            ];
+        }
+
         return $this->render('compare', [
             'submitted' => $submitted,
             'errors' => $errors,
@@ -105,6 +118,7 @@ class TeamController extends Controller
             'statsA' => $statsA,
             'statsB' => $statsB,
             'teamOptions' => $this->teamOptions(),
+            'teamInfo' => $teamInfo,
             'selectedA' => is_scalar($rawA) ? (string) $rawA : '',
             'selectedB' => is_scalar($rawB) ? (string) $rawB : '',
         ]);

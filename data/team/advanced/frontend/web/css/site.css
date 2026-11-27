@@ -118,3 +118,21 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+/* 首页精选球队卡片：使用弹性布局等高分栏，避免浮动列因高度不一致换行错位 */
+.team-cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.team-cards > [class*="col-"] {
+    display: flex;
+    float: none;
+}
+
+.team-cards .panel {
+    flex: 1 1 auto;
+    width: 100%;
+    margin-bottom: 20px;
+}
+

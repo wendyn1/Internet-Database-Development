@@ -50,10 +50,10 @@ $renderCard = function ($side, $team, $stats) {
             </div>
             <div class="panel-body">
                 <table class="table table-condensed">
-                    <tr><th>英文名</th><td><?= Html::encode($team->name_en) ?></td></tr>
-                    <tr><th>FIFA三字码</th><td><?= Html::encode($team->fifa_code) ?></td></tr>
-                    <tr><th>国家/地区</th><td><?= Html::encode($team->country) ?></td></tr>
-                    <tr><th>洲</th><td><?= Html::encode($team->continent) ?></td></tr>
+                    <tr><th>英文名</th><td class="info-name-en"><?= Html::encode($team->name_en) ?></td></tr>
+                    <tr><th>FIFA三字码</th><td class="info-fifa-code"><?= Html::encode($team->fifa_code) ?></td></tr>
+                    <tr><th>国家/地区</th><td class="info-country"><?= Html::encode($team->country) ?></td></tr>
+                    <tr><th>洲</th><td class="info-continent"><?= Html::encode($team->continent) ?></td></tr>
                 </table>
 
                 <h4>本站已录入战绩</h4>
@@ -87,7 +87,7 @@ $renderCard = function ($side, $team, $stats) {
     <?php
 };
 ?>
-<div class="team-compare" id="team-compare" data-stats-url="<?= Html::encode(Url::to(['/team/stats'])) ?>">
+<div class="team-compare" id="team-compare" data-stats-url="<?= Html::encode(Url::to(['/team/stats'])) ?>" data-team-info="<?= Html::encode(json_encode($teamInfo, JSON_UNESCAPED_UNICODE)) ?>">
     <h1><?= Html::encode($this->title) ?></h1>
     <p class="text-muted">
         进失球与胜平负仅覆盖本站已录入且已结束的2026世界杯比赛，不代表完整赛事成绩；

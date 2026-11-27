@@ -1,2 +1,9 @@
 # 本地临时产物（打包、核查脚本输出等），不纳入版本库
 /data/tmp/
+
+# 文档目录只提交最终 PDF 与 PPT，Markdown 源文件、截图和中间材料不入库
+/data/team/文档/**/*
+!/data/team/文档/**/
+!/data/team/文档/**/*.pdf
+!/data/team/文档/**/*.ppt
+!/data/team/文档/**/*.pptx

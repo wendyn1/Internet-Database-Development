@@ -44,10 +44,10 @@ $heroImage = Yii::getAlias('@web/images/hero-stadium.jpg');
     <?php if ($teams === []): ?>
         <p class="text-muted">暂无球队资料。</p>
     <?php else: ?>
-        <div class="row">
+        <div class="row team-cards">
             <?php foreach ($teams as $team): ?>
-                <div class="col-md-4" style="margin-bottom:20px;">
-                    <div class="panel panel-default" style="min-height:230px;">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
                         <div class="panel-body">
                             <?php if (!empty($team->logo_path)): ?>
                                 <?= Html::img('@web/' . ltrim($team->logo_path, '/'), [

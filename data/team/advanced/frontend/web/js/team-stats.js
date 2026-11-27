@@ -93,8 +93,17 @@
         }
     }
 
-    function showError(card, message) {
-        var errorBox = card.querySelector('.team-pie-error');
+    function updateInfo(card, info) {
+        if (!info) {
+            return;
+        }
+        setText(card, '.info-name-en', info.name_en || '');
+        setText(card, '.info-fifa-code', info.fifa_code || '');
+        setText(card, '.info-country', info.country || '');
+        setText(card, '.info-continent', info.continent || '');
+    }
+
+    function showError(card, message) {        var errorBox = card.querySelector('.team-pie-error');
         if (errorBox) {
             errorBox.style.display = 'block';
             var text = errorBox.querySelector('.team-pie-error-text');
@@ -115,6 +124,12 @@
         var url = root.getAttribute('data-stats-url');
         if (!url) {
             return;
+        }
+        var teamInfo = {};
+        try {
+            teamInfo = JSON.parse(root.getAttribute('data-team-info') || '{}');
+        } catch (error) {
+            teamInfo = {};
         }
         var controllers = {};
         var tokens = {};
@@ -210,17 +225,25 @@
                     if (!card) {
                         return;
                     }
-                    var selectedOption = select.options[select.selectedIndex];
+                    var otherSelect = root.querySelector('[name="' + (side === 'a' ? 'team_b_id' : 'team_a_id') + '"]');
+                    if (otherSelect && select.value && otherSelect.value === select.value) {
+                        if (select.form) {
+                            select.form.submit();
+                        }
+                        return;
+                    }
                     var nameNode = card.querySelector('.compare-team-name');
-                    if (nameNode && selectedOption && selectedOption.value) {
-                        var name = selectedOption.text.replace(/（ID\s*\d+）$/, '');
+                    var info = teamInfo[select.value] || null;
+                    if (nameNode && info) {
                         var nameLink = nameNode.querySelector('a');
                         if (nameLink) {
-                            nameLink.textContent = name;
+                            nameLink.textContent = info.name_zh;
+                            nameLink.setAttribute('href', info.url);
                         } else {
-                            nameNode.textContent = name;
+                            nameNode.textContent = info.name_zh;
                         }
                     }
+                    updateInfo(card, info);
                     load(card, select.value);
                 });
             })(selects[j]);

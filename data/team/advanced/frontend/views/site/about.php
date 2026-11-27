@@ -50,5 +50,5 @@ $repositoryUrl = 'https://github.com/wendyn1/Internet-Database-Development';
     <p>团队材料位于仓库 <code>data/team/</code>，个人作业位于 <code>data/personal/</code>。</p>
 
     <h2>小组成员</h2>
-    <p>牛雨萱（2411061）、王乐妍（2413423）、邓佳怡（2412612）</p>
+    <p>逐鹿组：牛雨萱（2411061）、王乐妍（2413423）、邓佳怡（2412612）</p>
 </div>
